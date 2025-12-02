@@ -16,17 +16,22 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+# 1Setup .NET SDK
+- task: UseDotNet@2
   inputs:
-    restoreSolution: '$(solution)'
+    packageType: 'sdk'
+    version: '7.0.x'
 
-- task: VSBuild@1
-  inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+# Restore NuGet packages
+- script: dotnet restore
+  displayName: 'Restore NuGet packages'
+
+# Build project
+- script: dotnet build --configuration Release
+  displayName: 'Build project'
+
+# Run tests
+- script: dotnet test --no-build --verbosity normal
+  displayName: 'Run tests'
 
 
