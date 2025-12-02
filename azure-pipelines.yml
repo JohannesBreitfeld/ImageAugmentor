@@ -33,11 +33,9 @@ steps:
 # Run tests
 - script: dotnet test --no-build --verbosity normal
   displayName: 'Run tests'
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
-    restoreSolution: '**/*.sln'
     feedsToUse: 'select'
-    vstsFeed: '35f3d347-62ef-4271-92f4-17251ffdd294'
 
 
