@@ -20,7 +20,7 @@ steps:
 - task: UseDotNet@2
   inputs:
     packageType: 'sdk'
-    version: '10.0.x'
+    version: '10'
 
 # Restore NuGet packages
 - script: dotnet restore
@@ -33,5 +33,11 @@ steps:
 # Run tests
 - script: dotnet test --no-build --verbosity normal
   displayName: 'Run tests'
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+    vstsFeed: '35f3d347-62ef-4271-92f4-17251ffdd294'
 
 
